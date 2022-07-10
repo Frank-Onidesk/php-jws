@@ -1,0 +1,64 @@
+<?php
+declare(strict_types=1);
+require "./vendor/autoload.php";
+
+use Firebase\JWT\JWT;
+
+define("Domain", "localhost");
+define("Username", "syuser");
+
+//server side
+class serverJWS {
+
+    function __construct($loginStatus)
+    {  
+        $this->credencialsStatus = $loginStatus;
+        $this->secret_key        = $_ENV['secret'];
+    }
+
+ public function generateReqData (){
+        
+       if($this->credencialsStatus){
+        # creating jwt
+        $date = new DateTimeImmutable();
+        $expires_at = $date->modify("+10")->getTimestamp();
+        $domain = Domain;
+        $username = Username;
+        $request_data = [
+                        "iat" => $date->getTimestamp(),  // token time
+                        "iss" =>  $domain , // entitty emmiter
+                        "nbf" => $date->getTimestamp(), // not before
+                        "exp" => $expires_at,
+                        "userName" => $username
+                        ];
+                        
+               $this->request_data;
+
+       }else{
+        return false;
+       }
+    
+ }
+
+
+    protected function encodeRequest(){
+
+        return JWT::encode(
+            $this->request_data,
+            $this->secret_key ,
+            'HS512'
+        );
+    }
+  
+
+    protected function save(){
+        
+    }
+
+   
+
+    //send token to client side
+
+
+}
+?>
